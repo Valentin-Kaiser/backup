@@ -1,5 +1,8 @@
 #!/bin/sh
 
+DATE=$(date +"%Y.%m.%d %H:%M:%S")
+echo "$DATE: => Starting restore" | tee -a /var/log/restore.log
+
 # Prompt the user to select a snapshot
 restic snapshots --repo $RESTIC_REPOSITORY
 
