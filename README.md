@@ -13,18 +13,18 @@ Run the container with the following command or use [docker compose](./compose.y
 
 ```bash
 docker run -d \
-  -e CRON_SCHEDULE="0 0 * * *" \
-  -e RESTIC_REPOSITORY="/backup" \
-  -v /path/to/backup:/source \
-  -v /path/to/restic/repository:/backup \
-  ghcr.io/valentin-kaiser/backup:latest
+    --name backup \
+    -v /path/to/your/source:/source \
+    -v /path/to/your/backup:/backup \
+    -v /path/to/your/password:/run/secrets/backup_password \
+    ghcr.io/valentin-kaiser/backup:latest
 ```
 
 ### Volumes and secrets
  
 - `/source`: The source directory to backup
 - `/backup`: The target directory to backup to a restic local repository
-- `/run/secrets/restic_password`: The password file for the restic repository
+- `/run/secrets/backup_password`: The password file for the restic repository
 
 ### Configuration via environment variables
 
@@ -32,15 +32,15 @@ The container schedules the backup and forget scripts using cron.
 Your data should be mounted to `/source` and your backup to `/backup`, but Restic can backup to different [types of repositories](https://restic.readthedocs.io/en/latest/030_preparing_a_new_repo.html).
 Possible values are `local`, `sftp`, `rest`, `s3`, `gs`, `b2`, `azure`, `rclone`. 
 Per default the container uses a local repository. You should mount the repository to `/backup` or configure it using environment variables.
-To secure your backup you should use docker secrets/a password file. The password file should be mounted to `/run/secrets/restic_password`.
+To secure your backup you should use docker secrets/a password file. The password file should be mounted to `/run/secrets/backup_password`.
 
 > You can fine tune restic and the backup and forget commands using the following environment variables and [restic environment variables](https://restic.readthedocs.io/en/latest/040_backup.html#environment-variables).
  
 - `BACKUP_SCHEDULE`: The schedule for the backup. Default: `0 0 * * *`
-- `FORGET_SCHEDULE`: The schedule for the forget command. Default: `0 1 * * 7`
+- `FORGET_SCHEDULE`: The schedule for the forget command. Default: `0 0 * * *`
 - `RESTIC_SOURCE`: The source directory to backup. Default: `/source`
 - `RESTIC_REPOSITORY`: The backup repository. Default local directory: `/backup`
-- `RESTIC_PASSWORD_FILE`: The password file for the restic repository. Default: `/run/secrets/restic_password`
+- `RESTIC_PASSWORD_FILE`: The password file for the restic repository. Default: `/run/secrets/backup_password`
 - `RESTIC_BACKUP_ARGS`: The arguments for the backup command. Default: `--exclude-caches --exclude-if-present=.nobackup --exclude-if-present=.backupignore`
 - `RESTIC_FORGET_ARGS`: The arguments for the forget command. Default: `--prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6`
 - `RESTIC_COMMPRESSION`: The compression algorithm to use. Default: `auto`
