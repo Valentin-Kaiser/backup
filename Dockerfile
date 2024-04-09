@@ -10,7 +10,7 @@ ENV RESTIC_SOURCE="/source/"
 ENV RESTIC_REPOSITORY="/backup/"
 ENV RESTIC_PASSWORD_FILE="/run/secrets/backup_password"
 ENV RESTIC_COMPRESSION="auto"
-ENV RESTIC_BACKUP_ARGS="--exclude-caches --exclude-if-present=.nobackup --exclude-if-present=.backupignore"
+ENV RESTIC_BACKUP_ARGS="--exclude-caches --exclude-if-present=.nobackup --exclude-if-present=.backupignore --exclude-file=/.backupignore"
 ENV RESTIC_FORGET_ARGS="--prune --keep-last 7 --keep-daily 14 --keep-weekly 4 --keep-monthly 6 --keep-yearly 1"
 
 RUN apk add --no-cache restic=$RESTIC_VERSION dcron=$CRON_VERSION
