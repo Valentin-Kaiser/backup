@@ -1,7 +1,7 @@
 #!/bin/sh -x
 
 # Initialize the repository if it doesn't exist
-restic -r $RESTIC_REPOSITORY cat config 2>/dev/null || restic -r $RESTIC_REPOSITORY init && /backup.sh
+restic -r $RESTIC_REPOSITORY cat config 2>/dev/null || (restic -r $RESTIC_REPOSITORY init && /backup.sh)
 
 # Add the backup job to the crontab if it doesn't exist
 crontab -l | grep -q "backup.sh" || (
