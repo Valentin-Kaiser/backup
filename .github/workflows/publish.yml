@@ -1,0 +1,54 @@
+---
+
+    name: Publish Docker Image
+    
+    on:
+      push:
+        branches:
+          - master
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    jobs:
+      publish:
+        runs-on: ubuntu-latest
+        steps:
+          -
+            name: Checkout
+            uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+          -
+            name: Docker meta
+            id: meta
+            uses: docker/metadata-action@v5
+            with:
+              images: |
+                ghcr.io/valentin-kaiser/backup
+              tags: |
+                type=raw,value=latest,enable={{is_default_branch}}
+          -
+            name: Set up QEMU
+            uses: docker/setup-qemu-action@v3
+          -
+            name: Set up Docker Buildx
+            uses: docker/setup-buildx-action@v3
+          -
+            name: Login to GHCR
+            if: github.event_name != 'pull_request'
+            uses: docker/login-action@v3
+            with:
+              registry: ghcr.io
+              username: ${{ github.repository_owner }}
+              password: ${{ secrets.GITHUB_TOKEN }}
+          -
+            name: Build and push
+            uses: docker/build-push-action@v5
+            with:
+              context: images/backup
+              platforms: linux/amd64,linux/arm64
+              push: ${{ github.event_name != 'pull_request' }}
+              tags: ${{ steps.meta.outputs.tags }}
+              labels: ${{ steps.meta.outputs.labels }}
