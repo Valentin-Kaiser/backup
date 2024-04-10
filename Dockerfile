@@ -20,6 +20,8 @@ COPY scripts/backup.sh /backup.sh
 COPY scripts/forget.sh /forget.sh
 COPY scripts/restore.sh /restore.sh
 
+RUN touch /.backupignore
+
 RUN chmod +x /entrypoint.sh /backup.sh /forget.sh /restore.sh
 
 VOLUME ["/source", "/backup"]
