@@ -41,7 +41,7 @@ To secure your backup you should use docker secrets/a password file. The passwor
 - `RESTIC_SOURCE`: The source directory to backup. Default: `/source`
 - `RESTIC_REPOSITORY`: The backup repository. Default local directory: `/backup`
 - `RESTIC_PASSWORD_FILE`: The password file for the restic repository. Default: `/run/secrets/backup_password`
-- `RESTIC_BACKUP_ARGS`: The arguments for the backup command. Default: `--exclude-caches --exclude-if-present=.nobackup --exclude-if-present=.backupignore --exclude-file=/.backupignore`
+- `RESTIC_BACKUP_ARGS`: The arguments for the backup command. Default: `--exclude-caches --exclude-if-present=.nobackup --exclude-file=/.backupignore`
 - `RESTIC_FORGET_ARGS`: The arguments for the forget command. Default: `--prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6`
 - `RESTIC_COMMPRESSION`: The compression algorithm to use. Default: `auto`
 
