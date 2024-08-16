@@ -1,7 +1,9 @@
 FROM alpine:3.20.2
 
-ARG RESTIC_VERSION=0.16.4-r4
+ARG RESTIC_VERSION=0.16.4-r5
 ARG CRON_VERSION=4.5-r9
+ARG BASH_VERSION=5.2.26-r0
+ARG BASH_COMPLETION_VERSION=2.12.0-r0
 
 ENV BACKUP_SCHEDULE="0 0 * * *"
 ENV FORGET_SCHEDULE="0 0 * * *"
@@ -13,7 +15,11 @@ ENV RESTIC_COMPRESSION="auto"
 ENV RESTIC_BACKUP_ARGS="--exclude-caches --exclude-if-present=.nobackup --exclude-file=/.backupignore"
 ENV RESTIC_FORGET_ARGS="--prune --keep-last 7 --keep-daily 14 --keep-weekly 4 --keep-monthly 6 --keep-yearly 1"
 
-RUN apk add --no-cache restic=$RESTIC_VERSION dcron=$CRON_VERSION
+RUN apk add --no-cache restic=$RESTIC_VERSION dcron=$CRON_VERSION bash=$BASH_VERSION bash-completion=$BASH_COMPLETION_VERSION
+
+# Enable bash completion
+RUN echo "source /etc/profile.d/bash_completion.sh" >> /etc/bash.bashrc
+RUN restic generate --bash-completion /etc/bash_completion.d/restic
 
 COPY scripts/entrypoint.sh /entrypoint.sh
 COPY scripts/backup.sh /backup.sh
