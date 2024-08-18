@@ -26,7 +26,7 @@ RUN chmod +x /entrypoint.sh /backup.sh /forget.sh /restore.sh
 
 VOLUME ["/source", "/backup"]
 
-HEALTHCHECK --interval=10s --timeout=10s --start-period=5s CMD restic snapshots --repo $RESTIC_REPOSITORY || exit 1
+HEALTHCHECK --interval=10s --timeout=10s --start-period=5s CMD restic snapshots --no-lock || exit 1
 
 #checkov:skip=CKV_DOCKER_3:too many permissions issues
 
