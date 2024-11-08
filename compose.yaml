@@ -1,6 +1,6 @@
 services:
   backup:
-    image: ghcr.io/valentin-kaiser/backup:latest
+    image: backup:latest
     container_name: backup
     volumes:
       - ./source:/source
@@ -8,14 +8,15 @@ services:
       - ./log:/var/log
       - ./.backupignore:/.backupignore
     environment:
-      - BACKUP_SCHEDULE=0 0 * * *
-      - FORGET_SCHEDULE=0 0 * * *
+      - BACKUP_SCHEDULE=* * * * *
+      - FORGET_SCHEDULE=0 * * * *
       - RESTIC_SOURCE=/source
       - RESTIC_REPOSITORY=/backup
       - RESTIC_PASSWORD_FILE=/run/secrets/backup_password
       - RESTIC_COMPRESSION=auto
       - RESTIC_BACKUP_ARGS="--exclude-caches --exclude-if-present=.nobackup --exclude-file=/.backupignore"
       - RESTIC_FORGET_ARGS=--prune --keep-last 7 --keep-daily 7 --keep-weekly 5 --keep-monthly 12 --keep-yearly 1
+      - RESTIC_TEST_MOUNT=true
     secrets:
       - backup_password
 

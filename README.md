@@ -44,6 +44,7 @@ To secure your backup you should use docker secrets/a password file. The passwor
 - `RESTIC_BACKUP_ARGS`: The arguments for the backup command. Default: `--exclude-caches --exclude-if-present=.nobackup --exclude-file=/.backupignore`
 - `RESTIC_FORGET_ARGS`: The arguments for the forget command. Default: `--prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6`
 - `RESTIC_COMMPRESSION`: The compression algorithm to use. Default: `auto`
+- `RESTIC_TEST_MOUNT`: Test if a file with the name .mounted exists in the repository directory. Default: `false`
 
 ### Scripts
 
