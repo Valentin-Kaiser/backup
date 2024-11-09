@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # If in mount mode, we fail if the lock file doesn't in the restic repository location
-if [ "$RESTIC_TEST_MOUNT" = "true" ]; then
-	if [ ! -f "$RESTIC_REPOSITORY/.mounted" ]; then
-		echo "Lock file not found in $RESTIC_REPOSITORY"
+if [ "$MOUNT_LOCK_TEST" = "true" ]; then
+	if [ ! -f "$MOUNT_LOCK_FILE" ]; then
+		echo "Lock file not found at $MOUNT_LOCK_FILE"
 		exit 1
 	fi
 fi
