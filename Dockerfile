@@ -22,7 +22,7 @@ COPY scripts/backup.sh /backup.sh
 COPY scripts/forget.sh /forget.sh
 COPY scripts/restore.sh /restore.sh
 
-RUN touch /.backupignore
+RUN touch /.backupignore && touch /var/log/backup.log && touch /var/log/forget.log
 
 RUN chmod +x /entrypoint.sh /backup.sh /forget.sh /restore.sh
 
